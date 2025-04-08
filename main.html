@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Saniyelik Site</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            padding: 50px;
+            transition: all 0.5s;
+        }
+        h1 {
+            color: #ff6b6b;
+        }
+        .timer {
+            font-size: 24px;
+            margin: 20px;
+            color: #2c3e50;
+        }
+        .content {
+            margin: 30px auto;
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        #keyDisplay {
+            display: none;
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 30px;
+            font-size: 24px;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>30 Saniyelik Gösterim</h1>
+        <p>Bu site 30 saniye sonra key.txt içeriğini gösterecek.</p>
+        <div class="timer">Kalan süre: <span id="countdown">30</span> saniye</div>
+    </div>
+    
+    <div id="keyDisplay"></div>
+
+    <script>
+        let seconds = 30;
+        const countdownElement = document.getElementById('countdown');
+        const keyDisplay = document.getElementById('keyDisplay');
+        
+        // key.txt içeriği (gerçek uygulamada bu bir sunucudan alınır)
+        const keyContent = "GİZLİ ANAHTAR: 42X9-7B2K-LP5Q-8M3N";
+        
+        const countdown = setInterval(() => {
+            seconds--;
+            countdownElement.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                document.body.style.backgroundColor = '#2c3e50';
+                document.querySelector('.content').style.display = 'none';
+                keyDisplay.style.display = 'block';
+                keyDisplay.textContent = keyContent;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
