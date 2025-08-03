@@ -1,0 +1,86 @@
+/* Neon Runner Styles */
+:root {
+  --bg: #0f0f0f;
+  --primary: #00eaff;
+  --secondary: #ff007a;
+  --white: #ffffff;
+  --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font);
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  overflow: hidden;
+}
+
+#ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none; /* Let clicks pass to buttons but not interfere with canvas */
+}
+
+#title {
+  margin-top: 20px;
+  font-size: 2.5rem;
+  color: var(--primary);
+  text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+  pointer-events: auto;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background: var(--secondary);
+  color: var(--white);
+  box-shadow: 0 0 10px var(--secondary), 0 0 20px var(--secondary);
+  transition: transform 0.2s ease, background 0.2s ease;
+  pointer-events: auto;
+}
+button:hover {
+  transform: scale(1.05);
+  background: #ff1a8c;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#hud {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  gap: 20px;
+  pointer-events: none;
+}
+
+#game {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@media (orientation: portrait) {
+  #title {
+    font-size: 2rem;
+  }
+  button {
+    font-size: 1rem;
+  }
+}

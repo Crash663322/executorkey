@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Runner</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="ui">
+        <h1 id="title">Neon Runner</h1>
+        <div id="menu">
+            <button id="startBtn">Başla</button>
+        </div>
+        <div id="hud" class="hidden">
+            <span id="score">0</span>
+            <span id="highscore"></span>
+        </div>
+        <div id="gameover" class="hidden">
+            <h2>Oyun Bitti</h2>
+            <p>Skor: <span id="finalScore"></span></p>
+            <button id="restartBtn">Tekrar Oyna</button>
+        </div>
+    </div>
+    <canvas id="game"></canvas>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
