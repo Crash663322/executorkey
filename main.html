@@ -4,72 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>30 Saniyelik Site</title>
+    
+    <!-- Performance Optimization Meta Tags -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#f0f8ff">
+    <meta name="description" content="30 saniye sonra gizli anahtarı gösteren site">
+    
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Critical CSS Inlined for Performance -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f8ff;
-            padding: 50px;
-            transition: all 0.5s;
-        }
-        h1 {
-            color: #ff6b6b;
-        }
-        .timer {
-            font-size: 24px;
-            margin: 20px;
-            color: #2c3e50;
-        }
-        .content {
-            margin: 30px auto;
-            max-width: 600px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        #keyDisplay {
-            display: none;
-            background: #2c3e50;
-            color: white;
-            padding: 20px;
-            border-radius: 5px;
-            text-align: center;
-            margin-top: 30px;
-            font-size: 24px;
-            min-height: 100px;
-        }
+        /* Critical above-the-fold styles only */
+        body{font-family:Arial,sans-serif;text-align:center;background-color:#f0f8ff;padding:50px;margin:0;transition:background-color .5s ease}
+        h1{color:#ff6b6b;margin:0 0 20px;font-size:2rem}
+        .timer{font-size:1.5rem;margin:20px 0;color:#2c3e50;font-weight:bold}
+        .content{margin:30px auto;max-width:600px;padding:20px;background:#fff;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.1);transform:translateZ(0)}
+        #keyDisplay{display:none;background:#2c3e50;color:#fff;padding:20px;border-radius:5px;text-align:center;margin-top:30px;font-size:1.5rem;min-height:100px;opacity:0;transition:opacity .3s ease}
+        #keyDisplay.show{opacity:1}
+        .loading{position:relative}
+        .loading::after{content:'';position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:2px solid #ff6b6b;border-top:2px solid transparent;border-radius:50%;animation:spin 1s linear infinite}
+        @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+        @media (max-width:768px){.content{margin:20px;padding:15px}h1{font-size:1.5rem}.timer{font-size:1.25rem}}
     </style>
+    
+    <!-- Non-critical CSS loaded asynchronously -->
+    <link rel="preload" href="data:text/css;base64," as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="data:text/css;base64,"></noscript>
 </head>
 <body>
     <div class="content">
         <h1>30 Saniyelik Gösterim</h1>
         <p>Bu site 30 saniye sonra key.txt içeriğini gösterecek.</p>
-        <div class="timer">Kalan süre: <span id="countdown">30</span> saniye</div>
+        <div class="timer" role="timer" aria-live="polite">
+            Kalan süre: <span id="countdown">30</span> saniye
+        </div>
     </div>
     
-    <div id="keyDisplay"></div>
+    <div id="keyDisplay" role="alert" aria-live="assertive"></div>
 
+    <!-- Optimized JavaScript with performance improvements -->
     <script>
-        let seconds = 30;
-        const countdownElement = document.getElementById('countdown');
-        const keyDisplay = document.getElementById('keyDisplay');
-        
-        // key.txt içeriği (gerçek uygulamada bu bir sunucudan alınır)
-        const keyContent = "GİZLİ ANAHTAR: 42X9-7B2K-LP5Q-8M3N";
-        
-        const countdown = setInterval(() => {
-            seconds--;
-            countdownElement.textContent = seconds;
+        (function() {
+            'use strict';
             
-            if (seconds <= 0) {
-                clearInterval(countdown);
-                document.body.style.backgroundColor = '#2c3e50';
-                document.querySelector('.content').style.display = 'none';
-                keyDisplay.style.display = 'block';
-                keyDisplay.textContent = keyContent;
+            // Cache DOM elements
+            const countdownElement = document.getElementById('countdown');
+            const keyDisplay = document.getElementById('keyDisplay');
+            const contentElement = document.querySelector('.content');
+            const bodyElement = document.body;
+            
+            // Configuration
+            const INITIAL_SECONDS = 30;
+            const KEY_CONTENT = "GİZLİ ANAHTAR: 42X9-7B2K-LP5Q-8M3N";
+            
+            let seconds = INITIAL_SECONDS;
+            let animationFrameId;
+            
+            // Performance optimization: Use requestAnimationFrame for smooth updates
+            function updateCountdown() {
+                countdownElement.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    showKey();
+                    return;
+                }
+                
+                seconds--;
+                setTimeout(() => {
+                    animationFrameId = requestAnimationFrame(updateCountdown);
+                }, 1000);
             }
-        }, 1000);
+            
+            // Optimized key display with CSS transitions
+            function showKey() {
+                // Use CSS classes instead of direct style manipulation for better performance
+                bodyElement.style.backgroundColor = '#2c3e50';
+                contentElement.style.display = 'none';
+                
+                keyDisplay.textContent = KEY_CONTENT;
+                keyDisplay.style.display = 'block';
+                
+                // Trigger reflow and add show class for smooth transition
+                keyDisplay.offsetHeight;
+                keyDisplay.classList.add('show');
+                
+                // Performance monitoring
+                if ('performance' in window && 'measure' in performance) {
+                    performance.mark('key-displayed');
+                    performance.measure('countdown-duration', 'navigationStart', 'key-displayed');
+                }
+            }
+            
+            // Cleanup function
+            function cleanup() {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+            }
+            
+            // Start countdown when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', updateCountdown);
+            } else {
+                updateCountdown();
+            }
+            
+            // Cleanup on page unload
+            window.addEventListener('beforeunload', cleanup);
+            
+            // Performance mark for initial load
+            if ('performance' in window && 'mark' in performance) {
+                performance.mark('app-initialized');
+            }
+            
+        })();
+    </script>
+    
+    <!-- Service Worker for caching -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(function(err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
